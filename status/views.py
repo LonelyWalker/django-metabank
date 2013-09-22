@@ -47,7 +47,7 @@ def index(request):
     new_summary = {}
 
     for k, v in summary.iteritems():
-        lower = k.lower().replace(' ', '_')
+        lower = k.lower().replace(' ', '_').replace('%','_')
         new_summary[lower] = {'value': v, 'label': k}
 
     data['summary'] = new_summary

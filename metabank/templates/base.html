@@ -65,43 +65,6 @@
 
 <!-- basic application js-->
 <script src="{{ STATIC_URL }}lb/js/app.js"></script>
-<script src="{{ STATIC_URL }}lb/js/settings.js"></script>
-
-<script type="text/template" id="message-template">
-        <div class="sender pull-left">
-            <div class="icon">
-                <img src="{{ STATIC_URL }}lb/img/2.jpg" class="img-circle" alt="">
-            </div>
-            <div class="time">
-                just now
-            </div>
-        </div>
-        <div class="chat-message-body">
-            <span class="arrow"></span>
-            <div class="sender">Tikhon Laninga</div>
-            <div class="text">
-            </div>
-        </div>
-</script>
-
-<script type="text/template" id="settings-template">
-    <div class="setting clearfix">
-        <div>Background</div>
-        <div id="background-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
-            <button type="button" data-value="dark" class="btn btn-small btn-transparent active">Dark</button>
-            <button type="button" data-value="light" class="btn btn-small btn-transparent">Light</button>
-        </div>
-    </div>
-</script>
-
-<script type="text/template" id="sidebar-settings-template">
-    <button type="button"
-            data-value="icons"
-            class="btn-icons btn btn-transparent btn-small">Icons</button>
-    <button type="button"
-            data-value="auto"
-            class="btn-auto btn btn-transparent btn-small">Auto</button>
-</script>
 
 <!-- page specific -->
 {% block bottomjs %}{% endblock %}
