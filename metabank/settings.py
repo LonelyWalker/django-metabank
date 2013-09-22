@@ -182,6 +182,9 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 CRISPY_TEMPLATE_PACK = 'bootstrap'
 
+CGMINER_HOST = 'localhost'
+CGMINER_PORT = 4028
+
 try:
     from local_settings import *
 except ImportError:

@@ -3,6 +3,7 @@ import time
 import datetime
 from subprocess import PIPE, Popen
 
+from django.conf import settings
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.http import HttpResponse
@@ -13,6 +14,8 @@ from django.utils.dateformat import format
 from cgminer import Client
 from models import LogAverage
 
+client = Client(getattr(settings, 'CGMINER_HOST', None),
+                getattr(settings, 'CGMINER_PORT', None))
 
 def sizeof_fmt(num):
     for x in [' bytes',' KB',' MB',' GB']:
@@ -30,12 +33,11 @@ def get_cpu_temperature():
 
 @login_required
 def index(request):
-    c = Client()
     data = {}
     context = RequestContext(request)
 
     try:
-        summary = c.command('summary')
+        summary = client.command('summary')
     except:
         data['offline'] = True
         summary = {}
@@ -90,11 +92,8 @@ def realtime(request):
 
 @login_required
 def realtime_data(request):
-
-    c = Client()
-
     try:
-        devs = c.command('devs')['DEVS']
+        devs = client.command('devs')['DEVS']
     except Exception:
         devs = []
         pass
@@ -135,11 +134,10 @@ def av_data(request):
             'y': float(l.get('mhs', 0))
         })
 
-    c = Client()
     try:
         values.append({
             'x': time.time(),
-            'y': c.command('summary')['SUMMARY'][0].get('MHS av')
+            'y': client.command('summary')['SUMMARY'][0].get('MHS av')
         })
     except Exception:
         values.append({

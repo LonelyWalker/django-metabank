@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from status.models import LogAverage
@@ -8,7 +9,8 @@ class Command(BaseCommand):
     usage_str = "Usage: ./manage.py metalog"
 
     def handle(self, *args, **options):
-        c = Client()
+        c = Client(getattr(settings, 'CGMINER_HOST', None),
+                   getattr(settings, 'CGMINER_PORT', None))
 
         try:
             summary = c.command('summary')['SUMMARY'][0]
