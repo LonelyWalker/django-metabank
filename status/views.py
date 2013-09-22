@@ -24,9 +24,8 @@ def sizeof_fmt(num):
 
 
 def get_cpu_temperature():
-    process = Popen(['vcgencmd', 'measure_temp'], stdout=PIPE)
-    output, _error = process.communicate()
-    return float(output[output.index('=') + 1:output.rindex("'")])
+    temp = open('/sys/class/thermal/thermal_zone0/temp','rb').readline()
+    return float(temp[:2] + '.' + temp[2:])
 
 
 @login_required
