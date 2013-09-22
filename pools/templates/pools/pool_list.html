@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h2 class="page-title">{% trans "Pools list" %}</h2>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span10">
+            <section class="widget">
+                <header>
+                    <h4>
+                        <i class="icon-table"></i>
+                        {% trans "Cgminer pools list" %}
+                    </h4>
+                </header>
+                <div class="body">
+                    {% if offline %}
+                        <h3> Cgminer is OFFLINE </h3>
+                    {% else %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{% trans 'URL' %}</th>
+                                    <th>{% trans 'User' %}</th>
+                                    <th>{% trans 'Status' %}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pool in pool_list %}
+                                    <tr>
+                                        <td>{{ pool.POOL }}</td>
+                                        <td>{{ pool.URL }}</td>
+                                        <td>{{ pool.User }}</td>
+                                        <td>
+                                            {% if pool.Status == 'Alive' %}
+                                                <span class="badge badge-success">{% trans 'Alive' %}</span>
+                                            {% elif pool.Status == 'Disabled' %}
+                                                <span class="badge badge-inverse">{% trans 'Disabled' %}</span>
+                                            {% elif pool.Status == 'Dead' %}
+                                                <span class="badge">{% trans 'Dead' %}</span>
+                                            {% else %}
+                                                <span class="badge">{{ pool.Status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'pool_switch' pool.POOL %}" class="btn btn-small btn-info">{% trans 'switch' %}</a>
+                                            <a href="{% url 'pool_remove' pool.POOL %}" class="btn btn-small btn-danger" >{% trans 'remove' %}</a>
+                                            <a href="{% url 'pool_enable' pool.POOL %}" class="btn btn-small btn-success" >{% trans 'enable' %}</a>
+                                            <a href="{% url 'pool_disable' pool.POOL %}" class="btn btn-small btn-inverse" >{% trans 'disable' %}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div>
+                            <a class="btn btn-warning" href="{% url 'pool_add' %}">
+                                <i class="icon-plus"></i>
+                                {% trans 'Add new' %}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

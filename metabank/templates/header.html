@@ -1,0 +1,29 @@
+<header class="page-header">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <ul class="nav pull-right">
+                <li class="visible-phone">
+                    <a href="#"
+                       class="btn-navbar"
+                       data-toggle="collapse"
+                       data-target=".sidebar"
+                       title="">
+                        <i class="icon-reorder"></i>
+                    </a>
+                </li>
+                <li class="hidden-phone"><a href="{% url 'auth_logout' %}"><i class="icon-signout"></i></a></li>
+            </ul>
+
+            {% if messages %}
+                <div class="notifications pull-right">
+                    {% for message in messages %}
+                        <div class="alert">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <i class="icon-{{ message.tags }}-sign"></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</header>

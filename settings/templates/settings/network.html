@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n crispy_forms_tags %}
+
+{% load i18n %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h2 class="page-title">{% trans "Settings" %}</h2>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span8">
+            <section class="widget">
+                <header>
+                    <h4>
+                        <i class="eicon-network"></i>
+                        {% trans 'Network interfaces' %}
+                    </h4>
+                </header>
+                <div class="body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{% trans 'IP address' %}</th>
+                                <th>{% trans 'Netmask' %}</th>
+                                <th>{% trans 'Status' %}</th>
+                                <th>{% trans 'Type' %}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for int in interfaces %}
+                                <td>{{ int.name }}</td>
+                                <td>{{ int.ipaddress }}</td>
+                                <td>{{ int.netmask }}</td>
+                                <td>{{ int.status }}</td>
+                                <td>{{ int.type }}</td>
+                                <td>
+                                    <a href="{% url 'settings_edit_interface' %}" class="btn btn-small btn-info">{% trans 'Edit' %}</a>
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}

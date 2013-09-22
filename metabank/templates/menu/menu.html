@@ -1,0 +1,19 @@
+{% load menu_tags %}
+{% for child in children %}
+    {% if child.children %}
+        <li class="{% if child.ancestor %}active {% endif %}accordion-group">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#side-nav" href="#{{ child.attr.slug }}-collapse">
+                <i class="{{ child.attr.icon }}"></i> <span class="name">{{ child.get_menu_title }}</span>
+            </a>
+            <ul id="{{ child.attr.slug }}-collapse" class="accordion-body collapse {% if child.ancestor %}in{% endif %}">
+                {% show_menu from_level to_level extra_inactive extra_active "menu/menu2.html" "" "" child %}
+            </ul>
+        </li>
+    {% else %}
+        <li class="{% if child.selected %}active{% endif %}">
+            <a href="{{ child.get_absolute_url }}">
+                <i class="{{ child.attr.icon }}"></i> <span class="name">{{ child.get_menu_title }}</span>
+            </a>
+        </li>
+    {% endif %}
+{% endfor %}

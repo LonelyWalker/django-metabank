@@ -1,0 +1,7 @@
+https://github.com/tehmaze/django-pam/archive/master.zip
+south
+django-crispy-forms
+django-cms
+psutil
+
+# south django-crispy-forms django-cms psutil django-pam Django django-classy-tags html5lib django-mptt django-sekizai six

@@ -1,0 +1,32 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link href="{{ STATIC_URL }}/lb/css/application.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+</head>
+<body>
+<div class="single-widget-container">
+    <section class="widget login-widget">
+        <header class="text-align-center">
+            <h4>Login to your account</h4>
+        </header>
+        <div class="body">
+            <form class="no-margin" action="." method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-block btn-large btn-danger">
+                        <span class="small-circle"><i class="icon-caret-right"></i></span>
+                        <small>Sign In</small>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+</body>
+</html>

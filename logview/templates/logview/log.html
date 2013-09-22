@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h2 class="page-title">{% trans "Logs" %}</h2>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <section class="widget">
+                <header>
+                    <h4>
+                        <i class="icon-list-alt"></i>
+                        {% trans "View logs" %}
+                    </h4>
+                    <div class="form-actions">
+                        <form class="form-inline" method="GET">
+                            <select name="file">
+                                {% for f in files %}
+                                    <option{% if f == file %} selected="selected"{% endif %}>{{ f }}</option>
+                                {% endfor %}
+                            </select>
+                            <input name="onpage" {% if onpage != 100 %}value="{{ onpage }}"{% endif %} type="text" placeholder="{% trans "Lines on page" %}">
+                          <button type="submit" class="btn">{% trans "Show" %}</button>
+                        </form>
+                    </div>
+                </header>
+                <div class="body" style="font-family:monospace;">
+                    {% for l in lines.object_list %}
+                        {{ l }}<br>
+                    {% endfor %}
+                </div>
+                <div class="clearfix">
+                    <div class="pagination">
+                        <ul>
+                            <li {% if not lines.has_previous %}class="disabled"{% endif %}>
+                                <a href="{% if lines.has_previous %}?page={{ lines.previous_page_number }}&file={{ file }}&onpage={{ onpage }}{% endif %}#">{% trans "Prev" %}</a>
+                            </li>
+
+                            <li class="active"><a href="#">{{ lines.number }}</a></li>
+
+                            <li {% if not lines.has_next %}class="disabled"{% endif %}>
+                                <a href="{% if lines.has_next %}?page={{ lines.next_page_number }}&file={{ file }}&onpage={{ onpage }}{% endif %}#">{% trans "Next" %}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+{% endblock %}

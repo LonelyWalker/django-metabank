@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load metabank %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h2 class="page-title">{% trans 'Basic Stats' %}</h2>
+        </div>
+    </div>
+
+    <div class="row-fluid box-row">
+        <div class="span2">
+            <div class="box">
+                <div class="icon">
+                    <i class="icon-ok online {% if offline %}hide{% endif %}"></i>
+                    <i class="icon-remove offline {% if not offline %}hide{% endif %}"></i>
+                </div>
+                <div class="description">
+                    <p class="offline {% if offline %}hide{% endif %}">{% trans 'cgminer offline' %}</p>
+                    <p class="online {% if not offline %}hide{% endif %}">{% trans 'cgminer online' %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="span2">
+            <div class="box">
+                <div class="big-text" id="mhs_av">
+                    {{ summary|get:'mhs_av' }}
+                </div>
+                <div class="description">
+                    <i class="eicon-gauge"></i>
+                    {% trans 'Hash rate (Mh/s)' %}
+                </div>
+            </div>
+        </div>
+        <div class="span2">
+            <div class="box">
+                <div class="big-text" id="get_failures">
+                    {{ summary|get:'get_failures' }}
+                </div>
+                <div class="description">
+                    {% trans 'Get Failures' %}
+                </div>
+            </div>
+        </div>
+        <div class="span2">
+            <div class="box">
+                <div class="big-text" id="hardware_errors">
+                    {{ summary|get:'hardware_errors' }}
+                </div>
+                <div class="description">
+                    {% trans 'Hardware Errors' %}
+                </div>
+            </div>
+        </div>
+        <div class="span2">
+            <div class="box">
+                <div class="big-text" id="utility">
+                    {{ summary|get:'utility' }}
+                </div>
+                <div class="description">
+                    {% trans 'Utility' %}
+                </div>
+            </div>
+        </div>
+        <div class="span2">
+            <div class="box">
+                <div class="big-text" id="rejected">
+                    {{ summary|get:'rejected' }}
+                </div>
+                <div class="description">
+                    {% trans 'Rejected' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="row-fluid">
+    <div class="span8">
+        <section class="widget">
+            <header>
+                <h4>
+                    <i class="icon-group"></i>
+                    {% trans 'Hashrate' %}
+                    <small>
+                        {% trans 'Based on last month' %}
+                    </small>
+                </h4>
+            </header>
+            <div class="body no-margin">
+                <div id="visits-chart" class="chart visits-chart">
+                    <svg></svg>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="span4">
+        <section class="widget" style="height: 420px">
+            <header>
+                <h4>
+                    <i class="icon-magnet"></i>
+                    {% trans 'Server Overview' %}
+                </h4>
+            </header>
+            <div class="body">
+                <ul class="server-stats">
+                    <li>
+                        <div class="key pull-right">CPU</div>
+                        <div class="stat">
+                            <div class="info">
+                                <span id="cpu_percent">{{ system.cpu_percent }}</span>% /
+                                <span id="cpu_temp">{{ system.cpu_temp }}</span>&deg;C
+                            </div>
+                            <div class="progress progress-small">
+                                <div class="bar" style="width: {{ system.cpu_percent }}%;" id="cpu_bar"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key pull-right">Mem</div>
+                        <div class="stat">
+                            <div class="info">
+                                <span id="mem_percent">{{ system.mem_percent }}</span>% /
+                                <span id="mem_used">{{ system.mem_used }}</span> (
+                                <span id="mem_total">{{ system.mem_total }}</span> )
+                            </div>
+                            <div class="progress progress-small progress-warning">
+                                <div class="bar" style="width: {{ system.mem_percent }}%;" id="mem_bar"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key pull-right">Disk</div>
+                        <div class="stat">
+                            <div class="info">
+                                <span id="disk_percent">{{ system.disk_percent }}</span>% /
+                                <span id="disk_used">{{ system.disk_used }}</span> (
+                                <span id="disk_total">{{ system.disk_total }}</span>)
+                            </div>
+                            <div class="progress progress-small progress-success">
+                                <div class="bar" style="width: {{ system.disk_percent }}%;" id="disk_bar"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key pull-right">LAN</div>
+                        <div class="stat">
+                            <div class="info">
+                                <span id="#eth0_recv">{{ system.eth0_recv }}</span> bytes<i class="icon-caret-down"></i>&nbsp;&nbsp;
+                                <span id="#eth0_sent">{{ system.eth0_sent }}</span> bytes<i class="icon-caret-up"></i>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span4">
+        <section class="widget widget-overview">
+            <header>
+                <h4>
+                    <i class="icon-lightbulb"></i> Cgminer summary
+                </h4>
+            </header>
+            <div class="body">
+                <ul class="overall-stats">
+                    {% if offline %}
+                        <h3> Cgminer is OFFLINE </h3>
+                    {% endif %}
+
+                    {% for k, v in summary.items %}
+                        <li>
+                            <span class="key">{{ v|simple_get:'label' }}</span>
+                            <div class="value pull-right">
+                                <span class="badge" id="sum_{{ k }}">{{ v|simple_get:'value' }}</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block bottomjs %}
+    <script src="{{ STATIC_URL }}status/js/index.js"></script>
+    <script src="{{ STATIC_URL }}status/js/index_live.js"></script>
+{% endblock %}
