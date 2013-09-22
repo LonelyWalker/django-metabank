@@ -18,14 +18,8 @@ $(function(){
                     $('.online').show();
                 }
 
-                $.each(['mhs_av', 'get_failures', 'hardware_errors', 'utility', 'rejected'], function(index, item){
-                    var value;
-                    if (data.offline) {
-                        value = '-';
-                    } else {
-                        value = data.summary[item].value;
-                    }
-                    $('#' + item).text(value);
+                $.each(['ghs_av', 'get_failures', 'hardware_errors', 'utility', 'rejected'], function(index, item){
+                    $('#' + item).text(data.offline ? '-' : data.summary[item].value);
                 });
 
                 $.each(['cpu_percent', 'cpu_temp', 'mem_percent',
