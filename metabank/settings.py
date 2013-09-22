@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'meta.db',
+        'NAME': '/var/lib/metabank/meta.db',
     }
 }
 
@@ -58,6 +58,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, "common_static"),
 )
 
 # List of finder classes that know how to find static files in
@@ -165,7 +166,7 @@ LOGGING = {
             'class': 'logging.handlers.SysLogHandler',
             'formatter': 'verbose',
             'facility': 'local1',
-            'address': 'log',
+            'address': '/dev/log',
         },
     },
     'loggers': {
