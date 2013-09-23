@@ -120,11 +120,13 @@ def chipinfo(request):
                 v['error_pct'] = round(100.0*v['errors']/(v['works']+v['errors']), 2) if (v['works']+v['errors']) > 0 else 0
                 v['error_status'] = 'good' if v['error_pct'] < GOOD_ERRORS else 'bad' if v['error_pct'] > BAD_ERRORS else 'ok'
 
-            slots = sorted(list(set([k.split('_')[0] for k in chips.keys()])))
+            slots = sorted(list(set([k.split('_')[0] for k in chips.keys()])), key=lambda s: int(s) if s.isdigit() else s)
             data = {
                 'slots': [
                     {'id': s,
-                     'chips': [chips[k] for k in sorted(chips.keys()) if k.startswith(s+'_')],
+                     'chips': [chips[k] for k in sorted(chips.keys(),
+                                                        key=lambda c: int(c.split('_')[1]) if c.split('_')[1].isdigit() else c)
+                               if k.startswith(s+'_')],
                      } for s in slots]
                 }
         return HttpResponse(json.dumps(data), mimetype="application/json")
