@@ -124,7 +124,7 @@ def chipinfo(request):
             data = {
                 'slots': [
                     {'id': s,
-                     'chips': [chips[k] for k in sorted(chips.keys()) if k.startswith(s)],
+                     'chips': [chips[k] for k in sorted(chips.keys()) if k.startswith(s+'_')],
                      } for s in slots]
                 }
         return HttpResponse(json.dumps(data), mimetype="application/json")
