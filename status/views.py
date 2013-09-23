@@ -54,7 +54,7 @@ def index(request):
     for k, v in summary.iteritems():
         lower = k.lower().replace(' ', '_').replace('%','_')
         if lower =='mhs_av':
-            new_summary['ghs_av'] = {'value': round(v/1024, 3), 'label': 'Gh/s av'}
+            new_summary['ghs_av'] = {'value': round(v/1000, 3), 'label': 'Gh/s av'}
         else:
             new_summary[lower] = {'value': v, 'label': k}
 
@@ -174,13 +174,13 @@ def av_data(request):
     for l in logs:
         values.append({
             'x': int(format(l['time'], 'U')),
-            'y': float(l.get('mhs', 0))
+            'y': float(l.get('mhs', 0)/1000)
         })
 
     try:
         values.append({
             'x': time.time(),
-            'y': client.command('summary')['SUMMARY'][0].get('MHS av')
+            'y': client.command('summary')['SUMMARY'][0].get('MHS av', 0)/1000
         })
     except Exception:
         values.append({
@@ -189,7 +189,7 @@ def av_data(request):
         })
 
     data = [{
-        'key': 'Hashrate',
+        'key': 'Hashrate (GH/s)',
         'values': values
     }]
 
