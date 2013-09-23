@@ -18,7 +18,7 @@ client = Client(getattr(settings, 'CGMINER_HOST', None),
                 getattr(settings, 'CGMINER_PORT', None))
 
 BAD_GHASH, GOOD_GHASH = getattr(settings, 'CHIP_OK_GHASH_RANGE', [2,2.8])
-BAD_ERRORS, GOOD_ERRORS = getattr(settings, 'CHIP_OK_ERROR_RANGE', [2, 40])
+BAD_ERRORS, GOOD_ERRORS = getattr(settings, 'CHIP_OK_ERROR_RANGE', [40, 2])
 
 def sizeof_fmt(num):
     for x in [' bytes',' KB',' MB',' GB']:
