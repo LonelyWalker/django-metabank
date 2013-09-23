@@ -185,6 +185,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap'
 CGMINER_HOST = 'localhost'
 CGMINER_PORT = 4028
 
+CHIP_OK_GHASH_RANGE = [2, 2.8]
+CHIP_OK_ERROR_RANGE = [2, 40]
+
 try:
     from local_settings import *
 except ImportError:

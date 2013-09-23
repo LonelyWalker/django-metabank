@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Chip info{% endblock %}
+
+{% block extra-head %}
+<style>
+  #slots > .span4:nth-child(3n+1) {
+    margin-left: 0;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h2 class="page-title">Chips info</h2>
+        </div>
+    </div>
+    <div class="row-fluid" id="slots">
+    </div>
+{% endblock %}
+
+{% block bottomjs %}
+    <script src="{{ STATIC_URL }}status/js/chipinfo.js"></script>
+
+    <script type="text/template" id="slot-template">
+        <div class="span4" id="slot-<%= slot.id %>">
+            <section class="widget">
+                <header>
+                    <h4>
+                        <i class="icon-user"></i>
+                        Slot <%= slot.id %>
+                    </h4>
+                </header>
+                <div class="body">
+                  <table id="chip-info" class="table table-condensed">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>GH/s</th>
+                        <th>bits</th>
+                        <th>works</th>
+                        <th>errors</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% _.each(slot.chips, function(chip){ %>
+                      <tr>
+                        <td><%= chip.id %></td>
+                        <td><span class="badge<%= chip.ghash_status=='good'?' badge-success':(chip.ghash_status=='bad'?' badge-important':'') %>"><%= chip.ghash %></span></td>
+                        <td><%= chip.bits %></td>
+                        <td><%= chip.works %></td>
+                        <td><%= chip.errors %> <span class="badge<%= chip.error_status=='good'?' badge-success':(chip.error_status=='bad'?' badge-important':'') %>"><%= chip.error_pct %>%</span></td>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+            </section>
+        </div>
+    </script>
+{% endblock %}

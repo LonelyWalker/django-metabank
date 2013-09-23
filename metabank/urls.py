@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^status/realtime/$', 'status.views.realtime', name='realtime'),
     url(r'^status/realtime_data/$', 'status.views.realtime_data', name='realtime_data'),
     url(r'^status/av_data/$', 'status.views.av_data', name='av_data'),
+    url(r'^status/chip-info/$', 'status.views.chipinfo', name='chip-info'),
 
     url(r'^pools/', include('pools.urls')),
     url(r'^settings/', include('settings.urls')),
