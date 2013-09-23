@@ -157,7 +157,7 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span4">
+    <div class="span12">
         <section class="widget widget-overview">
             <header>
                 <h4>
@@ -165,17 +165,15 @@
                 </h4>
             </header>
             <div class="body">
-                <ul class="overall-stats">
+                <ul class="overall-stats inline row-fluid">
                     {% if offline %}
                         <h3> Cgminer is OFFLINE </h3>
                     {% endif %}
 
                     {% for k, v in summary.items %}
-                        <li>
-                            <span class="key">{{ v|simple_get:'label' }}</span>
-                            <div class="value pull-right">
-                                <span class="badge" id="sum_{{ k }}">{{ v|simple_get:'value' }}</span>
-                            </div>
+                        <li class="span4">
+                            <span class="key pull-left">{{ v|simple_get:'label' }}</span>
+                            <span class="badge value pull-right" id="sum_{{ k }}">{{ v|simple_get:'value' }}</span>
                         </li>
                     {% endfor %}
                 </ul>
@@ -183,6 +181,12 @@
         </section>
     </div>
 </div>
+{% endblock %}
+
+{% block extra-head %}
+<style type="text/css">
+ul.overall-stats.inline > li.span4:nth-child(3n+1) { margin-left: 0; }
+</style>
 {% endblock %}
 
 {% block bottomjs %}
