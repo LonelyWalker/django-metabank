@@ -41,16 +41,18 @@
                         <th>bits</th>
                         <th>works</th>
                         <th>errors</th>
+                        <th>errors %</th>
                       </tr>
                     </thead>
                     <tbody>
                       <% _.each(slot.chips, function(chip){ %>
                       <tr>
                         <td><%= chip.id %></td>
-                        <td><span class="badge<%= chip.ghash_status=='good'?' badge-success':(chip.ghash_status=='bad'?' badge-important':'') %>"><%= chip.ghash %></span></td>
+                        <td><span class="label<%= chip.ghash_status=='good'?' label-success':(chip.ghash_status=='bad'?' label-important':'') %>"><%= chip.ghash %></span></td>
                         <td><%= chip.bits %></td>
                         <td><%= chip.works %></td>
-                        <td><%= chip.errors %> <span class="badge<%= chip.error_status=='good'?' badge-success':(chip.error_status=='bad'?' badge-important':'') %>"><%= chip.error_pct %>%</span></td>
+                        <td><%= chip.errors %></td>
+                        <td><span class="label<%= chip.error_status=='good'?' label-success':(chip.error_status=='bad'?' label-important':'') %>"><%= chip.error_pct %>%</span></td>
                       </tr>
                       <% }); %>
                     </tbody>
