@@ -7,6 +7,7 @@
   #slots > .span4:nth-child(3n+1) {
     margin-left: 0;
   }
+  .chip-info {margin-bottom: 0}
 </style>
 {% endblock %}
 
@@ -24,41 +25,51 @@
     <script src="{{ STATIC_URL }}status/js/chipinfo.js"></script>
 
     <script type="text/template" id="slot-template">
-        <div class="span4" id="slot-<%= slot.id %>">
-            <section class="widget">
-                <header>
-                    <h4>
-                        <i class="icon-user"></i>
-                        Slot <%= slot.id %>
-                    </h4>
-                </header>
-                <div class="body">
-                  <table id="chip-info" class="table table-condensed">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>GH/s</th>
-                        <th>bits</th>
-                        <th>works</th>
-                        <th>errors</th>
-                        <th>errors %</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% _.each(slot.chips, function(chip){ %>
-                      <tr>
-                        <td><%= chip.id %></td>
-                        <td><span class="label<%= chip.ghash_status=='good'?' label-success':(chip.ghash_status=='bad'?' label-important':'') %>"><%= chip.ghash %></span></td>
-                        <td><%= chip.bits %></td>
-                        <td><%= chip.works %></td>
-                        <td><%= chip.errors %></td>
-                        <td><span class="label<%= chip.error_status=='good'?' label-success':(chip.error_status=='bad'?' label-important':'') %>"><%= chip.error_pct %>%</span></td>
-                      </tr>
-                      <% }); %>
-                    </tbody>
-                  </table>
-                </div>
-            </section>
-        </div>
+      <div class="span4" id="slot-<%= slot.id %>">
+        <section class="widget">
+          <header>
+            <h4>
+              <i class="icon-fire"></i>
+              Slot <%= slot.id %>
+              <span class="pull-right">
+                GH/s
+                <span class="label<%= slot.ghash_status=='good'?' label-success':(slot.ghash_status=='bad'?' label-important':'') %>"><%= slot.ghash %></span>
+                Errors
+                <span class="label<%= slot.error_status=='good'?' label-success':(slot.error_status=='bad'?' label-important':'') %>"><%= slot.error_pct %>%</span>
+            </span>
+            </h4>
+          </header>
+          <div class="body">
+            <table class="chip-info table table-condensed">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>GH/s</th>
+                  <th>bits</th>
+                  <th>works</th>
+                  <th>errors</th>
+                  <th>errors %</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% _.each(slot.chips, function(chip){ %>
+                <tr>
+                  <td><%= chip.id %></td>
+                  <td>
+                    <span class="label<%= chip.ghash_status=='good'?' label-success':(chip.ghash_status=='bad'?' label-important':'') %>"><%= chip.ghash %></span>
+                  </td>
+                  <td><%= chip.bits %></td>
+                  <td><%= chip.works %></td>
+                  <td><%= chip.errors %></td>
+                  <td>
+                    <span class="label<%= chip.error_status=='good'?' label-success':(chip.error_status=='bad'?' label-important':'') %>"><%= chip.error_pct %>%</span>
+                  </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </script>
 {% endblock %}

@@ -17,7 +17,7 @@ $(function(){
       return;
     lock=true;
     $.ajax({
-      url:'/status/chip-info/',
+      url:'/status/chip-info/data/',
       dataType: 'json',
       success: function (data) {
         lock=false;

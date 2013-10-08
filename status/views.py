@@ -94,44 +94,52 @@ def realtime(request):
 
 @login_required
 def chipinfo(request):
-    if request.is_ajax():
-        try:
-            r = client.command('stats')['STATS'][0]
-        except:
-            data = None
-        else:
-            chips = {}
-
-            for k,v in r.iteritems():
-                if k.startswith('ghash_'):
-                    chips.setdefault(k[6:], {'id': k[6:]})
-                    chips[k[6:]]['ghash'] = round(v, 3)
-                elif k.startswith('clock_bits_'):
-                    chips.setdefault(k[11:], {'id': k[11:]})
-                    chips[k[11:]]['bits'] = v
-                elif k.startswith('match_work_count_'):
-                    chips.setdefault(k[17:], {'id':k[17:]})
-                    chips[k[17:]]['works'] = v
-                elif k.startswith('hw_errors_'):
-                    chips.setdefault(k[10:], {'id':k[10:]})
-                    chips[k[10:]]['errors'] = v
-            for v in chips.values():
-                v['ghash_status'] = 'good' if v['ghash'] >= GOOD_GHASH else 'bad' if v['ghash'] < BAD_GHASH else 'ok'
-                v['error_pct'] = round(100.0*v['errors']/(v['works']+v['errors']), 2) if (v['works']+v['errors']) > 0 else 0
-                v['error_status'] = 'good' if v['error_pct'] < GOOD_ERRORS else 'bad' if v['error_pct'] > BAD_ERRORS else 'ok'
-
-            slots = sorted(list(set([k.split('_')[0] for k in chips.keys()])), key=lambda s: int(s) if s.isdigit() else s)
-            data = {
-                'slots': [
-                    {'id': s,
-                     'chips': [chips[k] for k in sorted(chips.keys(),
-                                                        key=lambda c: int(c.split('_')[1]) if c.split('_')[1].isdigit() else c)
-                               if k.startswith(s+'_')],
-                     } for s in slots]
-                }
-        return HttpResponse(json.dumps(data), mimetype="application/json")
     return render(request, 'status/chipinfo.html')
 
+@login_required
+def chipinfo_data(request):
+    try:
+        r = client.command('stats')['STATS'][0]
+    except:
+        data = None
+    else:
+        chips = {}
+
+        for k,v in r.iteritems():
+            if k.startswith('ghash_'):
+                chips.setdefault(k[6:], {'id': k[6:]})
+                chips[k[6:]]['ghash'] = round(v, 3)
+            elif k.startswith('clock_bits_'):
+                chips.setdefault(k[11:], {'id': k[11:]})
+                chips[k[11:]]['bits'] = v
+            elif k.startswith('match_work_count_'):
+                chips.setdefault(k[17:], {'id':k[17:]})
+                chips[k[17:]]['works'] = v
+            elif k.startswith('hw_errors_'):
+                chips.setdefault(k[10:], {'id':k[10:]})
+                chips[k[10:]]['errors'] = v
+        for v in chips.values():
+            v['ghash_status'] = 'good' if v['ghash'] >= GOOD_GHASH else 'bad' if v['ghash'] < BAD_GHASH else 'ok'
+            v['error_pct'] = round(100.0*v['errors']/(v['works']+v['errors']), 2) if (v['works']+v['errors']) > 0 else 0
+            v['error_status'] = 'good' if v['error_pct'] < GOOD_ERRORS else 'bad' if v['error_pct'] > BAD_ERRORS else 'ok'
+
+        slots = sorted(list(set([k.split('_')[0] for k in chips.keys()])), key=lambda s: int(s) if s.isdigit() else s)
+        data = {
+            'slots': [
+                {'id': s,
+                 'chips': [chips[k] for k in sorted(chips.keys(),
+                                                    key=lambda c: int(c.split('_')[1]) if c.split('_')[1].isdigit() else c)
+                           if k.startswith(s+'_')],
+                 } for s in slots]
+            }
+        for slot in data['slots']:
+            for key in ('ghash', 'works', 'errors'):
+                slot[key] = round(sum(c[key] for c in slot['chips']), 3)
+            slot['ghash_status'] = 'good' if slot['ghash'] >= GOOD_GHASH*len(slot['chips']) else 'bad' if slot['ghash'] < BAD_GHASH*len(slot['chips']) else 'ok'
+            slot['error_pct'] = round(100.0*slot['errors']/(slot['works']+slot['errors']), 2) if (slot['works']+slot['errors']) > 0 else 0
+            slot['error_status'] = 'good' if slot['error_pct'] < GOOD_ERRORS else 'bad' if slot['error_pct'] > BAD_ERRORS else 'ok'
+
+    return HttpResponse(json.dumps(data), mimetype="application/json")
 
 @login_required
 def realtime_data(request):
