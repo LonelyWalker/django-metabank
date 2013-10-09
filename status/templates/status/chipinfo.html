@@ -8,6 +8,7 @@
     margin-left: 0;
   }
   .chip-info {margin-bottom: 0}
+  .chip-info a.set-bits:hover {text-decoration: none}
 </style>
 {% endblock %}
 
@@ -58,7 +59,11 @@
                   <td>
                     <span class="label<%= chip.ghash_status=='good'?' label-success':(chip.ghash_status=='bad'?' label-important':'') %>"><%= chip.ghash %></span>
                   </td>
-                  <td><%= chip.bits %></td>
+                  <td>
+                    <a class="set-bits" href="{% url 'set-bits' 'down' %}?chip=<%= chip.id %>&amp;bits=<%= chip.bits %>"><i class="icon-chevron-left"></i></a>
+                    <%= chip.bits %>
+                    <a class="set-bits" href="{% url 'set-bits' 'up' %}?chip=<%= chip.id %>&amp;bits=<%= chip.bits %>"><i class="icon-chevron-right"></i></a>
+                  </td>
                   <td><%= chip.works %></td>
                   <td><%= chip.errors %></td>
                   <td>

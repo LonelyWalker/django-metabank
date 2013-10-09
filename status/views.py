@@ -6,10 +6,11 @@ from subprocess import PIPE, Popen
 from django.conf import settings
 from django.shortcuts import render_to_response, render
 from django.template.context import RequestContext
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson as json
 from django.utils.dateformat import format
+from django.views.decorators.csrf import csrf_exempt
 
 from cgminer import Client
 from models import LogAverage
@@ -140,6 +141,24 @@ def chipinfo_data(request):
             slot['error_status'] = 'good' if slot['error_pct'] < GOOD_ERRORS else 'bad' if slot['error_pct'] > BAD_ERRORS else 'ok'
 
     return HttpResponse(json.dumps(data), mimetype="application/json")
+
+@login_required
+@csrf_exempt
+def set_bits(request, direction):
+    if request.method == 'POST':
+        try:
+            slot, chip = request.REQUEST['chip'].split('_')
+            bits = int(request.REQUEST['bits']) + (1 if direction == 'up' else -1)
+        except Exception, e:
+            return HttpResponseBadRequest("Bad arguments")
+
+        try:
+            data = client.command('setclkb', slot, chip, bits)['STATUS'][0]
+        except Exception, e:
+            data = {'STATUS': 'E',
+                    'Msg': unicode(e)}
+        return HttpResponse(json.dumps(data), mimetype="application/json")
+    return HttpResponseNotAllowed(['POST'])
 
 @login_required
 def realtime_data(request):

@@ -11,6 +11,26 @@ $(function(){
     }
   };
 
+  var statusIcons = {
+    W: 'icon-warning-sign',
+    I: 'icon-info-sign',
+    S: 'icon-ok-sign',
+    E: 'icon-exclamation-sign',
+    F: 'icon-exclamation-sign'
+  };
+
+  function notify(response){
+    var $notifs = $('.page-header .navbar-inner .notifications');
+    if (!$notifs.length) {
+      $notifs = $('<div class="notifications pull-right"></div>').appendTo($('.page-header .navbar-inner'));
+    }
+    var alert = $('<div class="alert"></div>')
+      .append('<a href="#" class="close" data-dismiss="alert">&times;</a>')
+      .append('<i class="'+statusIcons[response.STATUS]+'" />')
+      .append(' ' + response.Msg);
+    $notifs.append(alert);
+  };
+
   var lock=false;
   function update(){
     if (lock)
@@ -28,4 +48,17 @@ $(function(){
   };
   update();
   setInterval(update, 3000);
+
+  $(document).on('click', '.chip-info a.set-bits', function(e){
+    var url = $(this).attr('href');
+    $.ajax(url, {
+      type: 'POST',
+      success: notify,
+      error: function(jqXHR, textStatus, errorThrown){
+        notify({STATUS: 'E',
+                Msg: errorThrown});
+      }
+    });
+    return false;
+  });
 });

@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^status/av_data/$', 'status.views.av_data', name='av_data'),
     url(r'^status/chip-info/$', 'status.views.chipinfo', name='chip-info'),
     url(r'^status/chip-info/data/$', 'status.views.chipinfo_data', name='chip-info-data'),
+    url(r'^status/set-bits/(?P<direction>up|down)/$', 'status.views.set_bits', name='set-bits'),
 
     url(r'^pools/', include('pools.urls')),
     url(r'^settings/', include('settings.urls')),
