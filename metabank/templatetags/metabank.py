@@ -1,3 +1,4 @@
+from datetime import datetime
 from django import template
 
 
@@ -14,3 +15,11 @@ def get(d, key):
 @register.filter(name='simple_get')
 def simple_get(d, key):
     return d.get(key)
+
+
+@register.filter(name='not_exceed')
+def not_exceed(value, seconds=60):
+    if int(datetime.now().strftime("%s")) - int(value) < int(seconds):
+        return True
+    return False
+
