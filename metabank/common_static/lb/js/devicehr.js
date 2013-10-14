@@ -11,7 +11,7 @@ $(function(){
 // instantiate our graph!
 
     var graph = new Rickshaw.Graph( {
-        element: document.getElementById("realtime-chart"),
+        element: document.getElementById("devicehr-chart"),
         //width: $("#chart-container").width(),
         height: 300,
         renderer: 'area',

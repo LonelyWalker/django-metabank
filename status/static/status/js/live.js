@@ -1,7 +1,7 @@
 $(function(){
 
     $.ajax({
-        url: '/status/realtime_data/',
+        url: '/status/devicehr_data/',
         dataType: 'json',
         success: function (data) {
             var palette = new Rickshaw.Color.Palette({scheme: 'classic9'});
@@ -10,8 +10,13 @@ $(function(){
                 return i;
             });
 
+            if (data.length === 0) {
+                $('#devicehr-chart').html('<div class="row"><div class="span8 offset2"><h3>No data available</h3></div></div>');
+                return;
+            }
+
             var graph = new Rickshaw.Graph( {
-                element: document.getElementById("realtime-chart"),
+                element: document.getElementById("devicehr-chart"),
                 height: 300,
                 renderer: 'area',
                 stroke: true,
@@ -80,7 +85,7 @@ $(function(){
 
             setInterval( function() {
                 $.ajax({
-                    url: '/status/realtime_data/',
+                    url: '/status/devicehr_data/',
                     dataType: 'json',
                     success: function (data) {
                         var palette = new Rickshaw.Color.Palette({scheme: 'classic9'});
@@ -90,12 +95,12 @@ $(function(){
                         });
                         $.each(data, function(index, item){
                             graph.series[index].data = item.data;
-                        })
+                        });
 
                         graph.render();
                     }
                 });
             }, 5000 );
         }
-    })
+    });
 });

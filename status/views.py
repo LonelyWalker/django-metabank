@@ -88,10 +88,10 @@ def index(request):
 
 
 @login_required
-def realtime(request):
+def devicehr(request):
     context = RequestContext(request)
     context.update({})
-    return render_to_response('status/realtime.html', context,)
+    return render_to_response('status/devicehr.html', context,)
 
 @login_required
 def chipinfo(request):
@@ -161,7 +161,7 @@ def set_bits(request, direction):
     return HttpResponseNotAllowed(['POST'])
 
 @login_required
-def realtime_data(request):
+def devicehr_data(request):
     try:
         devs = client.command('devs')['DEVS']
     except Exception:
