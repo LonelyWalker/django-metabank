@@ -11,7 +11,7 @@ class AppMenu(Menu):
 
             NavigationNode(_('Statistic'), '', 3, attr={'icon': 'icon-bar-chart', 'slug': 'statistic'}),
             NavigationNode(_('Device hashrate'), reverse('devicehr'), 0, 3),
-            #NavigationNode(_('Realtime'), reverse('realtime'), 1, 3),
+            NavigationNode(_('Realtime'), reverse('realtime'), 1, 3),
             NavigationNode(_('Chip info'), reverse('chip-info'), 2, 3),
 
             #NavigationNode(_('Settings'), '', 4, attr={'icon': 'icon-cog', 'slug': 'settings'}),

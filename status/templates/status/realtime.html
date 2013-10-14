@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h2 class="page-title">Realtime Charts</h2>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12" style='min-width:1000px'>
+            <section class="widget">
+                <div class="form-actions">
+                    <form class="form-inline">
+                        <label class="checkbox">
+                            <input type="checkbox" class="gswitch" name="ghash" checked> Ghash
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" class="gswitch" name="hw_errors" checked> HW errors
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" class="gswitch" name="clock_bits" checked> Clock bits
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" class="gswitch" name="match_work_count" checked> Match work count
+                        </label>
+                    </form>
+                </div>
+                <div class="body">
+                    <div id='placeholder' style='width:98%'></div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottomjs %}
+    <style>
+        @import url({{ STATIC_URL }}status/css/realtime.css);
+    </style>
+    <!-- realtime -->
+    <script src="{{ STATIC_URL }}status/js/realtime.v1.min.js"></script>
+    <script src="{{ STATIC_URL }}status/js/realtime.js"></script>
+{% endblock %}

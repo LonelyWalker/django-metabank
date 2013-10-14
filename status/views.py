@@ -221,3 +221,25 @@ def av_data(request):
     }]
 
     return HttpResponse(json.dumps(data), mimetype="application/json")
+
+
+@login_required
+def realtime(request):
+    context = RequestContext(request)
+    context.update({})
+    return render_to_response('status/realtime.html', context,)
+
+
+@login_required
+def realtime_data(request):
+    c = Client()
+    data = {}
+
+    try:
+        stats = c.command('stats')['STATS']
+    except Exception:
+        stats = []
+
+    data['stats'] = stats
+
+    return HttpResponse(json.dumps(data), mimetype="application/json")
