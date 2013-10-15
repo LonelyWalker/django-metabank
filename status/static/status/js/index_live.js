@@ -28,10 +28,10 @@ $(function(){
                     $('#' + item).text(value);
                 });
 
-                $.each(['cpu_percent', 'cpu_temp', 'mem_percent',
-                        'mem_used', 'mem_total',
+                $.each(['server_uptime', 'cpu_percent', 'cpu_temp',
+                        'mem_percent', 'mem_used', 'mem_total',
                         'disk_percent', 'disk_used', 'disk_total',
-                        'eth0_recv', 'eth0_sent'], function(index, item){
+                        'eth0_recv', 'eth0_sent', 'wlan0_recv', 'wlan0_sent'], function(index, item){
                     var value = data.system[item];
                     $('#' + item).text(value);
                 });
