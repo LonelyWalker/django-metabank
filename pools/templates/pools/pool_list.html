@@ -35,9 +35,7 @@
                                 {% for pool in pool_list %}
                                     <tr>
                                         <td>{{ pool.POOL }}</td>
-                                        <td>{% if pool|simple_get:'Last Share Time'|not_exceed:"60" %}<font color="lime">{% else %}
-                                                {% if pool|simple_get:'Last Share Time'|not_exceed:"900" %}<font color="yellow">{% endif %}
-                                            {% endif %}{{ pool.URL }}{% if pool|simple_get:'Last Share Time'|not_exceed:"900" %}</font>{% endif %}</td>
+                                        <td><span class="label {{ pool.status|pool_status_label }}">{{ pool.URL }}</span></td>
                                         <td>{{ pool.User }}</td>
                                         <td>
                                             {% if pool.Status == 'Alive' %}

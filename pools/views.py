@@ -10,15 +10,24 @@ from forms import AddPool
 client = Client(getattr(settings, 'CGMINER_HOST', None),
                 getattr(settings, 'CGMINER_PORT', None))
 
+ACTIVE_STATUS_SECONDS = getattr(settings, 'ACTIVE_STATUS_SECONDS', 60)
+STALE_STATUS_SECONDS = getattr(settings, 'STALE_STATUS_SECONDS', 900)
+
 def pools(request):
     context = RequestContext(request)
 
     try:
         res = client.command('pools')
-    except:
-        context.update({ 'offline': True })
-    else:
         context.update({ 'pool_list': res['POOLS'] })
+        now = res['STATUS'][0]['When']
+        for pool in context['pool_list']:
+            last = pool['Last Share Time']
+            if now-last < ACTIVE_STATUS_SECONDS:
+                pool['status'] = 'active'
+            elif now-last < STALE_STATUS_SECONDS:
+                pool['status'] = 'stale'
+    except Exception, e:
+        context.update({ 'offline': True })
 
     return render_to_response('pools/pool_list.html', context,)
 
