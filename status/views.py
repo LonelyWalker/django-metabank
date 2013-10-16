@@ -29,10 +29,45 @@ def sizeof_fmt(num):
     return "%3.1f%s" % (num, ' TB')
 
 
-
 def get_cpu_temperature():
     temp = open('/sys/class/thermal/thermal_zone0/temp','rb').readline()
     return float(temp[:2] + '.' + temp[2:])
+
+
+# Gives a human-readable uptime string
+def uptime():
+    try:
+        f = open( "/proc/uptime" )
+        contents = f.read().split()
+        f.close()
+    except:
+       return "Cannot open uptime file: /proc/uptime"
+
+    total_seconds = float(contents[0])
+
+    # Helper vars:
+    MINUTE  = 60
+    HOUR    = MINUTE * 60
+    DAY     = HOUR * 24
+
+    # Get the days, hours, etc:
+    days    = int( total_seconds / DAY )
+    hours   = int( ( total_seconds % DAY ) / HOUR )
+    minutes = int( ( total_seconds % HOUR ) / MINUTE )
+    seconds = int( total_seconds % MINUTE )
+
+    # Build up the pretty string (like this: "N days, N hours, N minutes, N seconds")
+    string = ""
+    if days > 0:
+        string += str(days) + " " + (days == 1 and "day" or "days" ) + ", "
+    if len(string) > 0 or hours > 0:
+        string += str(hours) + " " + (hours == 1 and "hour" or "hours" ) + ", "
+    if len(string) > 0 or minutes > 0:
+        string += str(minutes) + " " + (minutes == 1 and "minute" or "minutes" ) + ", "
+    string += str(seconds) + " " + (seconds == 1 and "second" or "seconds" )
+
+    return string;
+
 
 
 @login_required
@@ -75,8 +110,11 @@ def index(request):
         'disk_percent': psutil.disk_usage('/').percent,
         'disk_total': sizeof_fmt(psutil.disk_usage('/').total),
         'disk_used': sizeof_fmt(psutil.disk_usage('/').used),
-        'eth0_sent': psutil.net_io_counters(pernic=True)['eth0'].bytes_sent,
-        'eth0_recv': psutil.net_io_counters(pernic=True)['eth0'].bytes_recv,
+        'eth0_sent': sizeof_fmt(psutil.net_io_counters(pernic=True)['eth0'].bytes_sent),
+        'eth0_recv': sizeof_fmt(psutil.net_io_counters(pernic=True)['eth0'].bytes_recv),
+        'wlan0_sent': sizeof_fmt(psutil.net_io_counters(pernic=True)['wlan0'].bytes_sent),
+        'wlan0_recv': sizeof_fmt(psutil.net_io_counters(pernic=True)['wlan0'].bytes_recv),
+        'server_uptime': uptime(),
     }
     data['system'] = system
 

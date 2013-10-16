@@ -105,6 +105,14 @@
             <div class="body">
                 <ul class="server-stats">
                     <li>
+                        <div class="key pull-right">UpTime</div>
+                        <div class="stat">
+                            <div class="info">
+                                <span id="server_uptime">{{ system.server_uptime }}</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
                         <div class="key pull-right">CPU</div>
                         <div class="stat">
                             <div class="info">
@@ -135,7 +143,7 @@
                             <div class="info">
                                 <span id="disk_percent">{{ system.disk_percent }}</span>% /
                                 <span id="disk_used">{{ system.disk_used }}</span> (
-                                <span id="disk_total">{{ system.disk_total }}</span>)
+                                <span id="disk_total">{{ system.disk_total }}</span> )
                             </div>
                             <div class="progress progress-small progress-success">
                                 <div class="bar" style="width: {{ system.disk_percent }}%;" id="disk_bar"></div>
@@ -146,8 +154,17 @@
                         <div class="key pull-right">LAN</div>
                         <div class="stat">
                             <div class="info">
-                                <span id="#eth0_recv">{{ system.eth0_recv }}</span> bytes<i class="icon-caret-down"></i>&nbsp;&nbsp;
-                                <span id="#eth0_sent">{{ system.eth0_sent }}</span> bytes<i class="icon-caret-up"></i>
+                                <i class="icon-caret-down"></i> <span id="eth0_recv" style="display:inline-block; width:33%;">{{ system.eth0_recv }}</span>
+                                <i class="icon-caret-up"></i> <span id="eth0_sent" style="display:inline-block; width:33%;">{{ system.eth0_sent }}</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key pull-right">WiFi</div>
+                        <div class="stat">
+                            <div class="info">
+                                <i class="icon-caret-down"></i> <span id="wlan0_recv" style="display:inline-block; width:33%;">{{ system.wlan0_recv }}</span>
+                                <i class="icon-caret-up"></i> <span id="wlan0_sent" style="display:inline-block; width:33%;">{{ system.wlan0_sent }}</span>
                             </div>
                         </div>
                     </li>
