@@ -20,7 +20,7 @@ nv.models.lineWithFocusChart = function() {
     , color = nv.utils.defaultColor()
     , width = null
     , height = null
-    , height2 = 100
+    , height2 = 50
     , x
     , y
     , x2

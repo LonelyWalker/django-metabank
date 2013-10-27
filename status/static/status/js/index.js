@@ -17,7 +17,7 @@ $(function(){
             }
 
             nv.addGraph(function() {
-                var chart = nv.models.lineChart()
+                var chart = nv.models.lineWithFocusChart()
                     .margin({top: 0, bottom: 25, left: 25, right: 0})
                     .showLegend(false)
                     .color([
@@ -35,9 +35,13 @@ $(function(){
 
                 chart.xAxis
                     .showMaxMin(false)
-                    .tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d*1000));});
+                    .tickFormat(function(d) { return d3.time.format('%d %b %H:%M')(new Date(d*1000));});
+                chart.x2Axis
+                    .showMaxMin(false)
+                    .tickFormat(function(d) { return d3.time.format('%d %b')(new Date(d*1000));});
 
-                d3.select('#visits-chart svg')
+
+                d3.select('#visits-chart').append("svg")
                     .datum(data)
                     .transition().duration(500)
                     .call(chart);

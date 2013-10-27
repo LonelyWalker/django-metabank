@@ -110,7 +110,7 @@ svg .title {
 
 .nvd3.nv-noData {
   font-size: 18px;
-  font-weight: bolf;
+  font-weight: bold;
 }
 
 
@@ -605,7 +605,7 @@ svg .title {
 .nvd3 .nv-brushBackground rect {
   stroke: #000;
   stroke-width: .4;
-  fill: #fff;
+  fill: #666;
   fill-opacity: .7;
 }
 

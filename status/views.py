@@ -21,6 +21,8 @@ client = Client(getattr(settings, 'CGMINER_HOST', None),
 BAD_GHASH, GOOD_GHASH = getattr(settings, 'CHIP_OK_GHASH_RANGE', [2,2.8])
 BAD_ERRORS, GOOD_ERRORS = getattr(settings, 'CHIP_OK_ERROR_RANGE', [40, 2])
 
+
+
 def sizeof_fmt(num):
     for x in [' bytes',' KB',' MB',' GB']:
         if num < 1024.0 and num > -1024.0:
@@ -29,9 +31,11 @@ def sizeof_fmt(num):
     return "%3.1f%s" % (num, ' TB')
 
 
+
 def get_cpu_temperature():
     temp = open('/sys/class/thermal/thermal_zone0/temp','rb').readline()
     return float(temp[:2] + '.' + temp[2:])
+
 
 
 # Gives a human-readable uptime string
@@ -232,8 +236,7 @@ SPLIT = 500
 
 @login_required
 def av_data(request):
-    time_threshold = datetime.datetime.now() - datetime.timedelta(hours=720)
-    logs = LogAverage.objects.filter(time__gt=time_threshold).values()
+    logs = LogAverage.objects.values()
 
     values = []
     for l in logs:
