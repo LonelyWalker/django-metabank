@@ -20,7 +20,13 @@ $(function(){
 
                 $.each(['get_failures', 'hardware_errors', 'rejected'], function(index, item){
                     var value = data.offline ? '-' : '' + Number(data.summary[item].value).toFixed();
-                    $('#' + item).text(value);
+                    if (value > 1000000) {
+                        $('#' + item).text((value / 1000000).toFixed(2) + ' M');
+                    } else if (value > 100000) {
+                        $('#' + item).text((value / 1000).toFixed() + ' k');
+                    } else {
+                        $('#' + item).text(value);
+                    }
                 });
 
                 $.each(['ghs_av', 'utility'], function(index, item){
