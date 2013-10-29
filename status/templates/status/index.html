@@ -130,7 +130,7 @@
                                 <span id="mem_used">{{ system.mem_used }}</span> (
                                 <span id="mem_total">{{ system.mem_total }}</span> )
                             </div>
-                            <div class="progress progress-small progress-warning">
+                            <div class="progress progress-small progress-info">
                                 <div class="bar" style="width: {{ system.mem_percent }}%;" id="mem_bar"></div>
                             </div>
                         </div>
@@ -148,6 +148,34 @@
                             </div>
                         </div>
                     </li>
+                    <li>
+                        <div class="key pull-right">/tmp</div>
+                        <div class="stat">
+                            <div class="info">
+                                <span id="disktmp_percent">{{ system.disktmp_percent }}</span>% /
+                                <span id="disktmp_used">{{ system.disktmp_used }}</span> (
+                                <span id="disktmp_total">{{ system.disktmp_total }}</span> )
+                            </div>
+                            <div class="progress progress-small progress-success">
+                                <div class="bar" style="width: {{ system.disktmp_percent }}%;" id="disktmp_bar"></div>
+                            </div>
+                        </div>
+                    </li>
+                    {% if system.diskvarlog_percent > 50 %}{# usually grows slowly so not interested in small values #}
+                    <li>
+                        <div class="key pull-right">/var/log</div>
+                        <div class="stat">
+                            <div class="info">
+                                <span id="diskvarlog_percent">{{ system.diskvarlog_percent }}</span>% /
+                                <span id="diskvarlog_used">{{ system.diskvarlog_used }}</span> (
+                                <span id="diskvar_total">{{ system.diskvarlog_total }}</span> )
+                            </div>
+                            <div class="progress progress-small progress-success">
+                                <div class="bar" style="width: {{ system.diskvarlog_percent }}%;" id="diskvarlog_bar"></div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
                     {% if system.eth0_recv %}
                     <li>
                         <div class="key pull-right">LAN</div>

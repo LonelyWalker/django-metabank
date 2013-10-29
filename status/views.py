@@ -111,16 +111,20 @@ def index(request):
         'mem_percent': psutil.virtual_memory().percent,
         'mem_total': sizeof_fmt(psutil.virtual_memory().total),
         'mem_used': sizeof_fmt(psutil.virtual_memory().used),
-        'disk_percent': psutil.disk_usage('/').percent,
-        'disk_total': sizeof_fmt(psutil.disk_usage('/').total),
-        'disk_used': sizeof_fmt(psutil.disk_usage('/').used),
         'server_uptime': uptime(),
     }
+
+    for i in ('/', '/tmp', '/var/log'):
+        system['disk' + i.replace('/', '') + '_percent'] = psutil.disk_usage(i).percent
+        system['disk' + i.replace('/', '') + '_total'] = sizeof_fmt(psutil.disk_usage(i).total)
+        system['disk' + i.replace('/', '') + '_used'] = sizeof_fmt(psutil.disk_usage(i).used)
+
     net_io = psutil.net_io_counters(pernic=True)
     for i in ('eth0', 'wlan0'):
         if i in net_io:
             system[i + '_sent'] = sizeof_fmt(net_io[i].bytes_sent)
             system[i + '_recv'] = sizeof_fmt(net_io[i].bytes_recv)
+
     data['system'] = system
 
     if request.is_ajax():

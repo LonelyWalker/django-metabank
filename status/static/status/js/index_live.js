@@ -31,6 +31,8 @@ $(function(){
                 $.each(['server_uptime', 'cpu_percent', 'cpu_temp',
                         'mem_percent', 'mem_used', 'mem_total',
                         'disk_percent', 'disk_used', 'disk_total',
+                        'disktmp_percent', 'disktmp_used', 'disktmp_total',
+                        'diskvarlog_percent', 'diskvarlog_used', 'diskvarlog_total',
                         'eth0_recv', 'eth0_sent', 'wlan0_recv', 'wlan0_sent'], function(index, item){
                     var value = data.system[item];
                     $('#' + item).text(value);
@@ -39,6 +41,26 @@ $(function(){
                 $('#cpu_bar').width(data.system.cpu_percent + '%');
                 $('#mem_bar').width(data.system.mem_percent + '%');
                 $('#disk_bar').width(data.system.disk_percent + '%');
+                $('#disktmp_bar').width(data.system.disktmp_percent + '%');
+                $('#diskvarlog_bar').width(data.system.diskvarlog_percent + '%');
+
+                $.each(['disk', 'disktmp', 'diskvarlog'], function(index, item){
+                    var value = data.system[item + '_percent'];
+                    bar = $('#' + item + '_bar').parent();
+                    if (value > 90) {
+                        bar.removeClass("progress-success");
+                        bar.removeClass("progress-warning");
+                        bar.addClass("progress-danger");
+                    } else if (value > 66) {
+                        bar.removeClass("progress-success");
+                        bar.addClass("progress-warning");
+                        bar.removeClass("progress-danger");
+                    } else {
+                        bar.addClass("progress-success");
+                        bar.removeClass("progress-warning");
+                        bar.removeClass("progress-danger");
+                    }
+                });
 
                 $.each(data.summary, function(key, value) {
                     $('#sum_' + key).text(value.value);
