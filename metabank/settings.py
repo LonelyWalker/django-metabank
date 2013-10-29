@@ -188,6 +188,9 @@ CGMINER_PORT = 4028
 CHIP_OK_GHASH_RANGE = [2, 2.8]
 CHIP_OK_ERROR_RANGE = [40, 2]
 
+ACTIVE_STATUS_SECONDS = 60
+STALE_STATUS_SECONDS = 900
+
 try:
     from local_settings import *
 except ImportError:

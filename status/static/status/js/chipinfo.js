@@ -53,7 +53,10 @@ $(function(){
     var url = $(this).attr('href');
     $.ajax(url, {
       type: 'POST',
-      success: notify,
+      success: function(response){
+        update();
+        notify(response);
+      },
       error: function(jqXHR, textStatus, errorThrown){
         notify({STATUS: 'E',
                 Msg: errorThrown});

@@ -148,6 +148,7 @@
                             </div>
                         </div>
                     </li>
+                    {% if system.eth0_recv %}
                     <li>
                         <div class="key pull-right">LAN</div>
                         <div class="stat">
@@ -157,6 +158,8 @@
                             </div>
                         </div>
                     </li>
+                    {% endif %}
+                    {% if system.wlan0_recv %}
                     <li>
                         <div class="key pull-right">WiFi</div>
                         <div class="stat">
@@ -166,6 +169,7 @@
                             </div>
                         </div>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </section>

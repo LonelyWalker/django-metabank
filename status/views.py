@@ -114,12 +114,13 @@ def index(request):
         'disk_percent': psutil.disk_usage('/').percent,
         'disk_total': sizeof_fmt(psutil.disk_usage('/').total),
         'disk_used': sizeof_fmt(psutil.disk_usage('/').used),
-        'eth0_sent': sizeof_fmt(psutil.net_io_counters(pernic=True)['eth0'].bytes_sent),
-        'eth0_recv': sizeof_fmt(psutil.net_io_counters(pernic=True)['eth0'].bytes_recv),
-        'wlan0_sent': sizeof_fmt(psutil.net_io_counters(pernic=True)['wlan0'].bytes_sent),
-        'wlan0_recv': sizeof_fmt(psutil.net_io_counters(pernic=True)['wlan0'].bytes_recv),
         'server_uptime': uptime(),
     }
+    net_io = psutil.net_io_counters(pernic=True)
+    for i in ('eth0', 'wlan0'):
+        if i in net_io:
+            system[i + '_sent'] = sizeof_fmt(net_io[i].bytes_sent)
+            system[i + '_recv'] = sizeof_fmt(net_io[i].bytes_recv)
     data['system'] = system
 
     if request.is_ajax():
@@ -232,8 +233,6 @@ def devicehr_data(request):
     return HttpResponse(json.dumps(data), mimetype="application/json")
 
 
-SPLIT = 500
-
 @login_required
 def av_data(request):
     logs = LogAverage.objects.values()
@@ -266,21 +265,13 @@ def av_data(request):
 
 @login_required
 def realtime(request):
-    context = RequestContext(request)
-    context.update({})
-    return render_to_response('status/realtime.html', context,)
+    return render(request, 'status/realtime.html')
 
 
 @login_required
 def realtime_data(request):
-    c = Client()
-    data = {}
-
     try:
-        stats = c.command('stats')['STATS']
+        stats = client.command('stats')['STATS']
     except Exception:
         stats = []
-
-    data['stats'] = stats
-
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return HttpResponse(json.dumps({'stats': stats}), mimetype="application/json")
