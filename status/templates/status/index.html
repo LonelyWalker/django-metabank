@@ -176,7 +176,7 @@
                         </div>
                     </li>
                     {% endif %}
-                    {% if system.eth0_recv %}
+                    {% if system.eth0_recv > "0.0 bytes" %}
                     <li>
                         <div class="key pull-right">LAN</div>
                         <div class="stat">
@@ -187,7 +187,7 @@
                         </div>
                     </li>
                     {% endif %}
-                    {% if system.wlan0_recv %}
+                    {% if system.wlan0_recv > "0.0 bytes" %}
                     <li>
                         <div class="key pull-right">WiFi</div>
                         <div class="stat">
